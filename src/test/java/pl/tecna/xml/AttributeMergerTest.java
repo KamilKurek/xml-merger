@@ -16,7 +16,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 @RunWith(JukitoRunner.class)
-@UseModules({XmlMergerModule.class})
+@UseModules({XmlMergerModule.class, DOMDocumentBuilderModule.class})
 public class AttributeMergerTest {
 
 	private static final String TEST_FILE_1_NAME = "attributesTestXml1.xml";
@@ -30,12 +30,12 @@ public class AttributeMergerTest {
 
 	@Test
 	public void mergeAttributesTest() throws IOException {
-		Element test1Element = readTestXml(TEST_FILE_1_NAME);
-		Element test2Element = readTestXml(TEST_FILE_2_NAME);
+		Element test1Element = readDocumentElement(TEST_FILE_1_NAME);
+		Element test2Element = readDocumentElement(TEST_FILE_2_NAME);
 		attributeMerger.mergeAttributes(test1Element, test2Element, test2Element);
 	}
 
-	private Element readTestXml(String fileName) throws IOException {
+	private Element readDocumentElement(String fileName) throws IOException {
 		try {
 			return documentBuilderProvider.get().parse(new InputSource(
 					new InputStreamReader(AttributeMergerTest.class.getResourceAsStream(fileName))))
