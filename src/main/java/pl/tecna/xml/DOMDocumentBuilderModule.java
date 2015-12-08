@@ -11,15 +11,15 @@ import com.google.inject.AbstractModule;
 
 public class DOMDocumentBuilderModule extends AbstractModule {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DOMDocumentBuilderModule.class);
-	
-	@Override
-	protected void configure() {
-		try {
-			bind(DocumentBuilder.class).toInstance(DocumentBuilderFactory.newInstance().newDocumentBuilder());
-		} catch (ParserConfigurationException e) {
-			LOG.error("Error while creating DocumentBuilder instance", e);
-		}		
-	}
+  private static final Logger LOG = LoggerFactory.getLogger(DOMDocumentBuilderModule.class);
+
+  @Override
+  protected void configure() {
+    try {
+      bind(DocumentBuilder.class).toInstance(DocumentBuilderFactory.newInstance().newDocumentBuilder());
+    } catch (ParserConfigurationException e) {
+      LOG.error("Error while creating DocumentBuilder instance", e);
+    }		
+  }
 
 }
