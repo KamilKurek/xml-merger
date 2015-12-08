@@ -1,4 +1,4 @@
-package pl.tecna.aurea.engine.forms.merge.impl;
+package pl.tecna.xml.impl;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -16,9 +16,9 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import pl.tecna.aurea.engine.forms.merge.Context;
-import pl.tecna.aurea.engine.forms.merge.ContextMerger;
-import pl.tecna.aurea.engine.forms.merge.XmlMerger;
+import pl.tecna.xml.Context;
+import pl.tecna.xml.ContextMerger;
+import pl.tecna.xml.XmlMerger;
 
 public class XmlMergerImpl implements XmlMerger {
 

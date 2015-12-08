@@ -1,4 +1,4 @@
-package pl.tecna.aurea.engine.forms.merge.impl;
+package pl.tecna.xml.impl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,10 +8,10 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.tecna.aurea.engine.forms.merge.AttributeMerger;
-import pl.tecna.aurea.engine.forms.merge.Context;
-import pl.tecna.aurea.engine.forms.merge.ContextMerger;
-import pl.tecna.aurea.engine.forms.merge.Key;
+import pl.tecna.xml.AttributeMerger;
+import pl.tecna.xml.Context;
+import pl.tecna.xml.ContextMerger;
+import pl.tecna.xml.Key;
 
 /**
  * laczenie danych kilku formularzy, algorytm:

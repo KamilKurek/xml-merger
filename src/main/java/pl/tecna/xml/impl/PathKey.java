@@ -1,11 +1,11 @@
-package pl.tecna.aurea.engine.forms.merge.impl;
+package pl.tecna.xml.impl;
 
 import javax.inject.Inject;
 
 import com.google.inject.assistedinject.Assisted;
 
-import pl.tecna.aurea.engine.forms.merge.Context;
-import pl.tecna.aurea.engine.forms.merge.Key;
+import pl.tecna.xml.Context;
+import pl.tecna.xml.Key;
 
 public class PathKey implements Key {
 

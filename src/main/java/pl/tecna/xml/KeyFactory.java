@@ -1,4 +1,4 @@
-package pl.tecna.aurea.engine.forms.merge;
+package pl.tecna.xml;
 
 public interface KeyFactory {
 
