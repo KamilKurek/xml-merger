@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
 
 @RunWith(JukitoRunner.class)
 @UseModules({XmlMergerModule.class})
-public class AttributeMergerTest  {
+public class AttributeMergerTest {
 
 	private static final String TEST_FILE_1_NAME = "attributesTestXml1.xml";
 	private static final String TEST_FILE_2_NAME = "attributesTestXml2.xml";
