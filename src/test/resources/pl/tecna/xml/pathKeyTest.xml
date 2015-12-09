@@ -1,0 +1,22 @@
+<Root>
+	<Person name="Johnny">
+		<Appeareance>
+		</Appeareance>
+		<ContactAddress>
+			<City>Warszawa</City>
+		</ContactAddress>
+		<ContactAddress>
+			<City>Rzeszów</City>
+		</ContactAddress>
+	</Person>
+	<Person name="Michał">
+		<Appeareance>
+		</Appeareance>
+		<ContactAddress>
+			<City>Poznań</City>
+		</ContactAddress>
+		<ContactAddress>
+			<City>Wrocław</City>
+		</ContactAddress>
+	</Person>
+</Root>
