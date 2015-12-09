@@ -21,7 +21,10 @@ import pl.tecna.xml.Key;
  *  a) jezeli dodawane to element jest dodawany wraz z wszystkimi child-ami
  *  b) jezeli sa laczone to przeskok do pierwszego kroku
  * 
- * 
+ * SOURCE: element zrodlowy, jesli laczonych jest kilka sciezek rownoleglych, to 
+ * jest to element przed rozdzieleniem sterowania
+ * ACTUAL: aktualny laczony element
+ * MERGED: aktualny wynik laczenia
  * 
  * 
  * @author Kamil Kurek
@@ -33,6 +36,9 @@ public class ContextMergerImpl implements ContextMerger {
   
   @Inject
   private AttributeMerger attributeMerger;
+  
+  @Inject
+  private ContextMerger contextMerger;
   
   @Override
   public void merge(Context source, Context actual, Context merged) {
@@ -48,17 +54,29 @@ public class ContextMergerImpl implements ContextMerger {
   }
   
   private void removeMissingChilds(Context source, Context actual, Context merged) {
-    List<Context> toRemove = new LinkedList<>();
-    for (Context actualChild : actual.getChildMap().values()) {
-      Key actualChildKey = actualChild.getKey();
-      if (merged.findChild(actualChildKey) == null && source.findChild(actualChildKey) != null) {
-        toRemove.add(actualChild);
+    List<Context> toRemove = new LinkedList<Context>();
+    for (Context mergedChild : merged.getChildMap().values()) {
+      Key mergedChildKey = mergedChild.getKey();
+      if (!actual.containsChild(mergedChildKey) && source.containsChild(mergedChildKey)) {
+        toRemove.add(mergedChild);
       }
     }
+    merged.removeChilds(toRemove);
   }
   
   private void updateChilds(Context source, Context actual, Context merged) {
-    
+    for (Context actualChild : actual.getChildMap().values()) {
+      Key actualChildKey = actualChild.getKey();
+      if (merged.containsChild(actualChildKey)) {
+        Context sourceChild = source.findChild(actualChildKey);
+        Context mergedChild = merged.findChild(actualChildKey);
+        contextMerger.merge(sourceChild, actualChild, mergedChild);
+      } else if (!source.containsChild(actualChildKey)) {
+        merged.addChild(actualChild);
+      } else if (source.containsChild(actualChildKey)) {
+        //TODO check if both xml are the same, if true then element is not added
+      }
+    }
   }
   
   private void addNewChilds(Context source, Context actual, Context merged) {

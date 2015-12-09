@@ -1,0 +1,16 @@
+<Root>
+	<Element id="EL1">
+	</Element>
+	<Element id="EL2">
+	</Element>
+	<Element id="EL3">
+	</Element>
+	<Element id="EL4">
+	</Element>
+	<SecondElement id="SEC_EL1">
+	</SecondElement>
+	<SecondElement id="SEC_EL2">
+	</SecondElement>
+	<SecondElement id="SEC_EL3">
+	</SecondElement>
+</Root>
