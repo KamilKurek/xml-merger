@@ -5,20 +5,28 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.google.inject.assistedinject.Assisted;
-
 import pl.tecna.xml.Context;
+import pl.tecna.xml.ContextFactory;
 import pl.tecna.xml.Key;
 import pl.tecna.xml.KeyFactory;
 
+import com.google.inject.assistedinject.Assisted;
+
 public class ContextImpl implements Context {
 
+  private static final Logger LOG = LoggerFactory.getLogger(ContextImpl.class);
+  
   @Inject
   private KeyFactory keyFactory;
+  
+  @Inject
+  private ContextFactory contextFactory;
   
   protected Element element;
   protected String path;
@@ -43,14 +51,14 @@ public class ContextImpl implements Context {
   }
   
   private void initChildsMap() {
-    childs = new HashMap<>();
+    childs = new HashMap<Key, Context>();
     NodeList childNodes = element.getChildNodes();
     for (int i = 0 ; i < childNodes.getLength() ; i++) {
       Node childNode = childNodes.item(i);
       if (childNode instanceof Element) { //TODO other types of node
         Element childElement = (Element) childNode;
-        Context ctx = new ContextImpl(childElement);
-        Key key = keyFactory.create(ctx);
+        Context ctx = contextFactory.create(childElement);
+        Key key = ctx.getKey();
         childs.put(key, ctx);
       }
     }
@@ -90,7 +98,6 @@ public class ContextImpl implements Context {
     path = getXPath(getElement(), "");
   }
   
-  //TODO sprawdzic czy wystarczy taka prosta sciezka
   private String getXPath(Node node, String xpath) {
     if (node == null) {
       return "";
@@ -103,8 +110,10 @@ public class ContextImpl implements Context {
     String predicates = "";
     if (parent == null) {
       return xpath;
-    } else {
+    } else if (parent instanceof Element) {
       predicates = getPredicatesString((Element) parent);
+    } else {
+      LOG.warn("Unknown element parent (class:" + parent.getClass() + ")");
     }
     StringBuilder currentXpathBuilder = new StringBuilder()
         .append("/")
@@ -128,32 +137,21 @@ public class ContextImpl implements Context {
   }
   
   private Integer getElementIndex(Element parent) {
-    NodeList childNodes = parent.getElementsByTagNameNS(getElement().getNamespaceURI(), getElement().getLocalName());
+    NodeList childNodes = parent.getChildNodes();
     if (childNodes.getLength() == 0) {
       return null;
     }
+    int count = 0;
     for (int i = 0 ; i < childNodes.getLength() ; i++) {
       Node child = childNodes.item(i);
       if (child == getElement()) {
-        return i;
+        return count;
+      } else if (child instanceof Element &&
+          child.getNodeName().contentEquals(getElement().getNodeName())) {
+        count++;
       }
     }
-    return null;
-  }
-  
-  @Override
-  public String toString() {
-    if (element == null) {
-      return "Context[WARN: element is null]";
-    }
-    StringBuilder builder = new StringBuilder()
-        .append("Context[element name:")
-        .append(element.getNodeName())
-        .append(" Key:")
-        .append(getKey().toString())
-        .append("]");
-    
-    return builder.toString();
+    return count;
   }
 
   @Override
@@ -168,5 +166,26 @@ public class ContextImpl implements Context {
       childs.remove(childToRemove.getKey());
       element.removeChild(childToRemove.getElement());
     }
+  }
+
+  @Override
+  public boolean containsChild(Key child) {
+    Map<Key, Context> map = getChildMap();
+    return map.containsKey(key);
+  }
+
+  @Override
+  public String toString() {
+    if (element == null) {
+      return "Context[WARN: element is null]";
+    }
+    StringBuilder builder = new StringBuilder()
+    .append("Context[element name:")
+    .append(element.getNodeName())
+    .append(" Key:")
+    .append(getKey().toString())
+    .append("]");
+    
+    return builder.toString();
   }
 }

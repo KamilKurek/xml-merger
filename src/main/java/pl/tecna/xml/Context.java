@@ -14,6 +14,8 @@ public interface Context {
   
   Context findChild(Key key);
   
+  boolean containsChild(Key child);
+  
   void addChild(Context context);
   
   String getPath();
